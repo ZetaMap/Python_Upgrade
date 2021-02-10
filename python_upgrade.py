@@ -128,6 +128,14 @@ def super_print(screen,list,page=1,fill=0,valid=0):
 
 ######Fonction separator######
 
+def len2(ocject):
+  try:
+    return len(object)
+  except TypeError:
+    return len(str("")+str(object)+str(""))
+
+######Fonction separator######
+
 def AIsplit(letters,text,separator=" "):
 ### v Testing fonction v ###
   try:
