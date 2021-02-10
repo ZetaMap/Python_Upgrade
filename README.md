@@ -9,6 +9,7 @@ Ce programme contient des fonctions python plus avancés et peut-être utilisée
 
 Fonctions :
 
+
     super_print(screen , list , page , fill , valid)
     len2(object)
     AIsplit(letters , text , separator)
@@ -17,6 +18,7 @@ Fonctions :
 -----------------------------------------------------
 
 Dépendances :
+
 
     super_print() :
         ion module
@@ -35,6 +37,7 @@ Dépendances :
 -----------------------------------------------------
 
 Descriptions :
+
 
     super_print() : Une fonction print() extrêmement avancé et modulable. Une fonction qui peut créer des livres, si vous le voulez XD.
     Le paramètre "screen" (obligatoire) demande la résolution de votre écran (format : "lignes"x"lettres"). Si vous ne savez pas, indiquez juste si vous avez mis la police d'écriture Python par "0" ou "1" (uniquement sur les calculettes Numworks). False | 0 = Grande police d'écriture ; True | 1 = Petite police d'écriture ; 00x00 = résolution désirée
