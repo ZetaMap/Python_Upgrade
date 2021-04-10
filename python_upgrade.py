@@ -1,244 +1,205 @@
 from ion import keydown,KEY_LEFT,KEY_RIGHT,KEY_UP,KEY_DOWN,KEY_EXE,KEY_OK
 from time import sleep
 
-def super_print(screen,list,page=1,fill=0,valid=0):
+def super_print(screen,list_,page=True,fill=False,valid=False):
 ### v Testing fonction v ###
-  try:
-    len(list)
-    list.reverse()
-    list.reverse()
-  except TypeError:
-    print("super_print() : \n\tErreur : 'list = {}'. Le contenu n'est pas une liste.\n".format(list))
-    return
-  except AttributeError:
-    print("super_print() : \n\tErreur : 'list = {}'. Le contenu n'est pas une liste.\n".format(list))
-    return
-  try:
-    screen+1
-    __screen__="auto"
-  except TypeError:
-    __temp__=screen.split("x")
-    if len(__temp__) == 2 and __temp__[0].isdigit() and __temp__[1].isdigit():
-      __screen__="perso"
-    else:  
-      print("super_print() : \n\tErreur : 'screen = {}' Le format de résolution n'est pas valide. (format à utiliser : '<lignes>x<lettres>')\n".format(screen))
-      return
-  try:
-    page+fill+valid+1
-  except TypeError:
-    print("super_print() : \n\tErreur : Les paramètres passifs de la fonction ne sont pas valides.\n")
-    return
-  except UnboundLocalError:
-    print("super_print() : \n\tErreur : Les paramètres passifs de la fonction ne sont pas valides.\n")
-    return
+  if not (type(screen) == bool or type(screen) ==  str): raise TypeError("\n\tParamètre 'screen' : Le contenu doit être un Booléen ou un Str.")
+  if not type(list_) == list: raise TypeError("\n\tParamètre 'list_' : Le contenu n'est pas une liste.")
+  if not(type(page) == int or type(page) == bool): raise TypeError("\n\tParamètre 'page' : Le contenu n'est pas valide.")
+  if not type(fill) == bool: raise TypeError("\n\tParamètre 'fill' : Le contenu n'est un Booléen")
+  if not(type(valid) == int or type(valid) == bool or valid == {"easter": 99}): raise TypeError("\n\tParamètre 'valid' : Le contenu n'est pas valide.")
 ### ^ Testing fonction ^ ###
-
-  def __init__(screen,list,page,__screen__):
-    if __screen__ == "perso":
+  def __init__(screen,list_,page):
+    try:
+      screen+1
+      if not screen: letters,lines=27,11
+      if screen: letters,lines=40,14
+    except TypeError:
       screen=screen.split("x")
-      lines,letters=int(screen[0]),int(screen[1])
-    if __screen__ == "auto":
-      if screen == 0 or screen == False:
-        letters=27
-        lines=11
-      if screen == 1 or screen == True:
-        letters=40
-        lines=14
-    Nb,index,Nb_page=len(list),0,0
-    if page == 1 or page == True:
+      if len(screen) == 2 and screen[0].isdigit() and screen[1].isdigit(): lines,letters=int(screen[0]),int(screen[1])
+      else: raise TypeError("\n\tParamètre 'screen' : Le format de résolution n'est pas valide. (format : '<lignes>x<lettres>')")
+    Nb,index,Nb_page=len(list_),0,0
+    if page:
       page=Nb//(lines-1)
-      if Nb%(lines-1): page=page+1
+      if Nb%(lines-1): page+=1
     return letters,lines,index,Nb,Nb_page,page
   
-  def printing(list,Nb,index,lines,letters):
+  def printing(list_,Nb,index,lines,letters):
     try:
-      print("")
+      print()
       for i in range(Nb):
-        print(list[index])
-        index,lines=index+1,lines-1
+        print(list_[index])
+        index+=1
+        lines-=1
     except IndexError: None
     return lines,index
 
   def filling(fill,lines):
-    if fill == 1 or fill == True:
-      for i in range(lines): print("")
+    if fill:
+      for i in range(lines): print()
 
   def page_indexing(letters,page,Nb_page):
     letters_space="  "
     for i in range(letters-len(">EXE to exit"+"Page "+"/"+str(Nb_page)+str(page))):
       letters_space=str(letters_space)+" "
-    print(">EXE to exit{}Page {}/{}".format(letters_space,Nb_page,page),end="")
+    print(">EXE to exit{}Page {}/{}".format(letters_space,Nb_page,page))
     return page,Nb_page
 
-  def print_scan(lines,left,Nb,index):
-    if left == 1:
-      for i in range(Nb):
-        if not index%lines: break
-        index=index+1
-      index=index-lines*2
-    return index
-
-  def scanAndprint(list,page,fill,Nb,Nb_page,index,lines,letters,left):
-    if page == 0 or page == False:
-      lines,index=printing(list,Nb,index,lines,letters)
+  def scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,left):
+    if not page:
+      lines,index=printing(list_,Nb,index,lines,letters)
       filling(fill,lines)
 
-    if page == 1 or page == True or page >=2:
-      index=print_scan(lines,left,Nb,index)
+    if page or page >=2:
+      lines-=1
+      if left == 1:
+        for i in range(Nb):
+          if not index%lines: break
+          index+=1
+        index+=-lines*2
       if Nb>lines: Nb=lines
-      lines,index=printing(list,Nb,index,lines,letters)
-      filling(1,lines)
+      lines,index=printing(list_,Nb,index,lines,letters)
+      filling(True,lines)
       page,Nb_page=page_indexing(letters,page,Nb_page)
-
 ### v Test line v ###
 #    print("Nb:{} lines:{} index:{}".format(Nb,lines,index))
 ### ^ Test line ^ ###
     return index
 
-  def validation(valid):
-    if valid == 1: input("-->          _|OK|_           ")
-    if valid == 2: input("-->        _|Retour|_         ")
-    if valid == 3: input("-->        _|Cancel|_         ")
-    if valid == 96: input("--> _|LoL it's a Easter Egg|_ ")
-    if valid == 97: input("-->   _|Morgan le caca !|_    ")
-    if valid == 98: input("-->     _|Tina la BG !|_      ")
-    if valid == 99: input("-->    _|Made by Zackari|_    ")
-    if valid == 100: input("-->    _|It's my name XD|_    ")
-    if valid == 0 or valid == False: return False
-    else: return True
-
-  letters,lines,index,Nb,Nb_page,page=__init__(screen,list,page,__screen__)
-  Nb_page=Nb_page+1
-  index=scanAndprint(list,page,fill,Nb,Nb_page,index,lines,letters,0)
+  letters,lines,index,Nb,Nb_page,page=__init__(screen,list_,page)
+  Nb_page+=1
+  index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,0)
   sleep(0.2)
-  while (page == 1 or page >= 2):
+  while (page or page >= 2):
+    if keydown(KEY_EXE): break
     if keydown(KEY_LEFT) and Nb_page < page+1 and Nb_page > 1:
-      Nb_page=Nb_page-1
-      index=scanAndprint(list,page,fill,Nb,Nb_page,index,lines,letters,1)
+      Nb_page-=1
+      index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,1)
       sleep(0.2)
 
     if keydown(KEY_RIGHT) and Nb_page < page and Nb_page > 0:
-      Nb_page=Nb_page+1
-      index=scanAndprint(list,page,fill,Nb,Nb_page,index,lines,letters,0)
+      Nb_page+=1
+      index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,0)
       sleep(0.2)
 
-    if keydown(KEY_EXE):
-      break
-  return validation(valid)
+  if not valid: return False
+  else:  
+    if valid == 1: input("-->          _|OK|_           ")
+    if valid == 2: input("-->        _|Retour|_         ")
+    if valid == 3: input("-->        _|Cancel|_         ")
+    if valid == {"easter": 99}: input("--> _|LoL it's a Easter Egg|_ "); input("-->   _|Morgan le caca !|_    "); input("-->     _|Tina la BG !|_      "); input("-->    _|Made by Zackari|_    "); input("-->    _|It's my name XD|_    ")
+    return True
 
 ######Fonction separator######
 
-def len2(ocject):
-  try:
-    return len(object)
-  except TypeError:
-    return len(str("")+str(object)+str(""))
+def len2(object):
+  try: return len(object)
+  except TypeError: 
+    if type(object) == type: return len(str(object))-10
+    else: return len(str(object))
 
 ######Fonction separator######
 
-def AIsplit(letters,text,separator=" "):
+def AIsplit(letters,text,separator=" ",full=True):
 ### v Testing fonction v ###
-  try:
-    letters+1
-    text.isalpha()
-  except TypeError:
-    print("AIsplit() : \n\tErreur : 'letters = {}'. Le contenu n'est pas une chaine de nombres.\n".format(letters))
-    return  
-  except AttributeError:
-    print("AIsplit() : \n\tErreur : 'text = {'. Le contenu n'est pas une chaine de caractères.\n".format(text))
-    return
-  try:
-    len(separator)
-    if separator == "":
-      print("AIsplit() : \n\tErreur : 'separator = {}'. Le séparateur est vide.\n".format(separator))
-      return
-    if separator == "\n":
-      print("AIsplit() : \n\tErreur : 'separator = \\n'. Le paramètre n'accepte pas le retour à la ligne ('\\n').\n")
-      return
-  except TypeError:
-    print("AIsplit() : \n\tErreur : 'separator = {}'. Le contenu n'est pas une chaine de caractères.\n".format(separator))
-    return
+  if not type(letters) == int: raise TypeError("\n\tParamètre 'letters' : Le contenu n'est pas un Int.")
+  if letters < 1: raise ValueError("\n\tParamètre 'letters' : Le contenu doit être supérieur à 1.")
+  if not type(text) == str: raise TypeError("\n\tParamètre 'text' : Le contenu n'est pas un Str.")
+  if not type(separator) == str: raise TypeError("\n\tParamètre 'separator' : Le contenu n'est pas un Str.")
+  if separator == "": raise ValueError("\n\tParamètre 'separator' : Le séparateur est vide.")
 ### ^ Testing fonction ^ ###
-
-  def __init__(letters,text):
-    if letters == 0: letters=27
-    if letters == 1: letters=42
-    index,Nb,__temp__,__cache__,__cutter__=0,len(text),"",separator,"\n"
-    return letters,index,Nb,__temp__,__cache__,__cutter__
-  
-  def spliting(text,separator): return text.split(separator)
-
-  def joining(text,letters,separator,index,Nb,__temp__,__cache__,__cutter__):
-    worlds=text[index]
+  def __main__(text,letters,separator,Nb):
+    index,__temp__,back,worlds,cutter=0,"",separator,"","\n"
+    worlds=insert(letters,text[index],cutter)
     for i in range(Nb):
       try:
-        if (len(worlds+text[index+1]) >= letters) or  worlds.endswith("\n"):
-          __temp__=__cutter__.join([__temp__,worlds])
-          worlds,separator="",__cutter__       
+        if (len(worlds+text[index+1]) >= letters) or worlds.endswith("\n"):
+          __temp__=cutter.join([__temp__,worlds])
+          worlds,separator="",cutter       
+        else if :
         else:          
-          index=index+1
+          index+=1
           worlds=separator.join([worlds,text[index]])
-          if separator == __cutter__: separator=__cache__
-#        print(worlds)
+          if separator == cutter: separator=back
+        #print(worlds)
       except IndexError: None
-    if not  worlds == "": __temp__=__cutter__.join([__temp__,worlds])
-    return __temp__,__cutter__
-  
-  letters,index,Nb,__temp__,__cache__,__cutter__=__init__(letters,text)
-  text=spliting(text,separator)
-  text,separator=joining(text,letters,separator,index,Nb,__temp__,__cache__,__cutter__)
-  text=spliting(text,separator)
-#  print(text)
+    if not worlds == "": __temp__=cutter.join([__temp__,worlds])
+    return __temp__
+
+  if letters == 0: letters=27
+  if letters == 1: letters=42
+  if separator == "\n": separator=" "
+  Nb=len(text)
+  if full: 
+    text=text.split(separator)
+    text=__main__(text,letters,separator,Nb)
+  else: text=insert(letters, text,"\n",True)
+  print([text])
+  text=text.splitlines()
   for i in range(text.count("")): text.remove("")
   return text
 
 ######Fonction separator######
 
-def list2print(list,lines):
+def list2print(list_,lines):
 ### v Testing fonction v ###
-  try:
-    lines+1
-    list.reverse()
-    list.reverse()
-    if len(list) < lines:
-      print("list2print() : \n\tErreur : 'lines = {}'. Le nombre de lignes doit être inférieur au nombre d'occurrences de la liste.\n".format(lines))
-      return
-  except TypeError:
-    print("list2print() : \n\tErreur : 'lines = {}'. Le contenu n'est pas une chaine de nombres.\n".format(lines))
-    return
-  except AttributeError:
-    print("list2print() : \n\tErreur : 'list = {}'. Le contenu n'est pas une chaine de nombres.\n".format(list))
-    return
+  if not type(list_) == list: raise TypeError("\n\tParamètre 'list_' : Le contenu n'est pas une liste.")
+  if not type(lines) == int: raise TypeError("\n\tParamètre 'lines' : Le contenu n'est pas un Int.")
+  if len(list_) < lines: raise IndexError("\n\tErreur : 'lines' doit être inférieur au nombre d'occurrences de 'list_'.")
 ### ^ Testing fonction ^ ###
-
-  def printing(list,index,lines):
-    print("")
+  def printing(list_,index,lines):
+    print()
     for i in range(lines):
-      print(list[index])
-      index=index+1
+      print(list_[index])
+      index+=1
     return index
 
-  def up(list,index,lines):
-    if index>lines:
-      index=index-lines-1
-      index=printing(list,index,lines)
-    else: index=lines+1
+  def up(list_,index,lines):
+    if index>lines+1:
+      index+=-lines-1
+      index=printing(list_,index-1,lines+1)
     sleep(0.2)
     return index
 
-  def down(list,index):
-    if index<len(list):
-      print(list[index])
-      index=index+1
+  def down(list_,index):
+    if index<len(list_):
+      print(list_[index])
+      index+=1
     sleep(0.2)
     return index
   
-  index=printing(list,0,len(list))
+  index=printing(list_,0,lines)
   sleep(0.2)
   while True:
     if keydown(KEY_EXE) or keydown(KEY_OK): break
-    if keydown(KEY_UP): index=up(list,index,lines)
-    if keydown(KEY_DOWN): index=down(list,index)
+    if keydown(KEY_UP): index=up(list_,index,lines)
+    if keydown(KEY_DOWN): index=down(list_,index)
   return
 
 ######Fonction separator######
+
+def insert(index,object,add,repeat=False):
+### v Testing fonction v ###
+  if not type(index) == int: raise TypeError("'index': string indices must be integers")
+  if index < 1: raise ValueError("'index' must be greater than 1.")
+  if type(object) == type: raise TypeError("cannot insert 'object' into a type")
+  if not type(repeat) == bool: raise TypeError("'repeat' must be a boolean")
+### ^ Testing fonction ^ ###
+  __temp__,__save__='',index
+  for i in range(len(object)):
+    try:
+      if i == index: 
+        __temp__+=str(add)
+        if repeat: index+=__save__
+        #print(index,":",i,":",__temp__)
+    except IndexError: ...
+    __temp__+=object[i]
+  if (not len(object) % __save__) and repeat: __temp__+=str(add)
+  return __temp__
+
+######Fonction separator######
+
+x="Bonjour, je suis une phrase bien construite et sans erreur. ;)"
+list_=AIsplit(10,x,full=True)
+print(list_)
+super_print(False,list_)
