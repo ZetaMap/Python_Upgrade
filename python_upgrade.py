@@ -198,8 +198,3 @@ def insert(index,object,add,repeat=False):
   return __temp__
 
 ######Fonction separator######
-
-x="Bonjour, je suis une phrase bien construite et sans erreur. ;)"
-list_=AIsplit(10,x,full=True)
-print(list_)
-super_print(False,list_)
