@@ -195,7 +195,7 @@ def insert(index,object,add,repeat=False):
   if not type(repeat) == bool: raise TypeError("'repeat' must be a boolean")
 ### ^ Testing fonction ^ ###
   __temp__,__save__='',index
-  for i in range(len(object)):
+  for i in range(len(object)+1):
     try:
       if i == index: 
         __temp__+=str(add)
@@ -203,8 +203,8 @@ def insert(index,object,add,repeat=False):
   ### v Debug line v ###
   #      print(index,":",i,":",__temp__)
   ### ^ Debug line ^ ###
+      __temp__+=object[i]
     except IndexError: ...
-    __temp__+=object[i]
   if (not len(object) % __save__) and repeat: __temp__+=str(add)
   return __temp__
 
