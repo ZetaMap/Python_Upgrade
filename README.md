@@ -1,8 +1,8 @@
-Python_Upgrade (v24)
+Python_Upgrade (v24.1)
 
 Création : 21/01/2021
 
-Dernière mise à jour : 10/04/2021 - 20:15
+Dernière mise à jour : 13/04/2021 - 18:05
 
 ————
 
@@ -10,7 +10,7 @@ Dernière mise à jour : 10/04/2021 - 20:15
 
 Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme
 
----------- 
+----------
 Fonctions :
 
     super_print(screen , list_ , page , fill , valid)
@@ -23,7 +23,7 @@ Fonctions :
 
     insert(index , object , add , repeat)
 
----------- 
+----------
 Dépendances :
 
     super_print() :
@@ -50,7 +50,7 @@ Dépendances :
 
         Pas de dépendances.
 
----------- 
+----------
 Descriptions :
 
     super_print() : Une fonction print() extrêmement avancé et modulable qui peut créer des livres, si vous le voulez XD. La fonction peut aussi renvoyer "True" si un message du paramètre "valid" est accepté sinon "False".
@@ -69,7 +69,7 @@ Descriptions :
     len2() : Une fonction presque pareil à len(). Mais grâce à cette fonction, vous pouvez lire absolument tout (chaine de nombre, caractère ou des listes).
 
 
-    AIsplit() : Une fonction split() très avancée, qui vous retournera une liste en foction du nombre de lettres indiqués, correspondant à une ligne de votre écran. Vous pouvez aussi changer le séparateur qui servira de découpe, et lui dire si vous voulez que les mots soient entiers ou pas.
+    AIsplit() : Une fonction split() très avancée, qui vous retournera une liste avec chaque occurrence correspondant à une ligne de votre écran. Vous pouvez aussi changer le séparateur qui servira de découpe, et lui dire si vous voulez que les mots soient entiers ou pas.
 
         "letters" (obligatoire) vous demande le nombre de lettres sur laquelle la découpe contera comme une ligne. (uniquement sur les calculettes Numworks : "0" ou "1", si vous ne savez pas.). 0 = grande police ; 1 = petite police ; >2 = nombre de lettres désirées.
 
@@ -77,7 +77,7 @@ Descriptions :
 
         "separator" (passif) dit au programme ce qu'il doit considérer comme un mot (par défaut : separator=" ").
 
-        "full" (passif) dit au programme si vous voulez que les mots soient entiers ou pas lors de la découpe, sauf si elle est obligée de couper (par défaut : full=True).
+        "full" (passif) dit au programme si vous voulez que les mots soient entiers ou pas lors de la découpe, sauf si il est obligé de couper. (par défaut : full=True)
 
 
     list2print() : Une fonction un peu plus avancées que print(). Une fonction vous permettant de circuler dans une liste affichée à l'écran avec ↑ ou ↓.
@@ -97,5 +97,5 @@ Descriptions :
 
         "repeat" (passif) dit au programme si vous voulez que l'opération soit répété jusqu'au bout de la chaine de caractères.
 
----------- 
+----------
 Concernant toute demande, problème ou suggestion avec ce script, veuillez me contacter sur mon Discord : BTA_Susideur#5093.
