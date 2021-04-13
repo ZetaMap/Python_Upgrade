@@ -209,8 +209,3 @@ def insert(index,object,add,repeat=False):
   return __temp__
 
 ######Fonction separator######
-
-x="Les boucles énumérées sont des boucles qui sont utilisées si vous savez à l'avance combien de fois vous voulez faire une boucle. En Java, cela s'appelle des boucles for."
-list_=AIsplit(6,x,full=True)
-print(list_)
-super_print(False,list_)
