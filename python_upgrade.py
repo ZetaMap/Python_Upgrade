@@ -31,7 +31,7 @@ def super_print(screen,list_,page=True,fill=False,valid=False):
         print(list_[index])
         index+=1
         lines-=1
-    except IndexError: None
+    except IndexError: ...
     return lines,index
 
   def filling(fill,lines):
@@ -41,18 +41,18 @@ def super_print(screen,list_,page=True,fill=False,valid=False):
   def page_indexing(letters,page,Nb_page):
     letters_space="  "
     for i in range(letters-len(">EXE to exit"+"Page "+"/"+str(Nb_page)+str(page))):
-      letters_space=str(letters_space)+" "
+      letters_space=letters_space+" "
     print(">EXE to exit{}Page {}/{}".format(letters_space,Nb_page,page))
     return page,Nb_page
 
-  def scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,left):
-    if not page:
+  def scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,left=False):
+    if page == True:
       lines,index=printing(list_,Nb,index,lines,letters)
       filling(fill,lines)
 
-    if page or page >=2:
+    if page == True or page >=2:
       lines-=1
-      if left == 1:
+      if left:
         for i in range(Nb):
           if not index%lines: break
           index+=1
@@ -61,28 +61,28 @@ def super_print(screen,list_,page=True,fill=False,valid=False):
       lines,index=printing(list_,Nb,index,lines,letters)
       filling(True,lines)
       page,Nb_page=page_indexing(letters,page,Nb_page)
-### v Test line v ###
-#    print("Nb:{} lines:{} index:{}".format(Nb,lines,index))
-### ^ Test line ^ ###
+  ### v Debug line v ###
+  #  print("Nb:{} lines:{} index:{}".format(Nb,lines,index))
+  ### ^ Debug line ^ ###
     return index
 
   letters,lines,index,Nb,Nb_page,page=__init__(screen,list_,page)
   Nb_page+=1
-  index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,0)
+  index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters)
   sleep(0.2)
-  while (page or page >= 2):
+  while (page == True or page >= 2):
     if keydown(KEY_EXE): break
     if keydown(KEY_LEFT) and Nb_page < page+1 and Nb_page > 1:
       Nb_page-=1
-      index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,1)
+      index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,True)
       sleep(0.2)
 
     if keydown(KEY_RIGHT) and Nb_page < page and Nb_page > 0:
       Nb_page+=1
-      index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,0)
+      index=scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters)
       sleep(0.2)
 
-  if not valid: return False
+  if valid == False: return False
   else:  
     if valid == 1: input("-->          _|OK|_           ")
     if valid == 2: input("-->        _|Retour|_         ")
@@ -102,39 +102,48 @@ def len2(object):
 
 def AIsplit(letters,text,separator=" ",full=True):
 ### v Testing fonction v ###
-  if not type(letters) == int: raise TypeError("\n\tParamètre 'letters' : Le contenu n'est pas un Int.")
+  if not (type(letters) == int or type(letters) == bool): raise TypeError("\n\tParamètre 'letters' : Le contenu n'est pas un Int.")
   if letters < 1: raise ValueError("\n\tParamètre 'letters' : Le contenu doit être supérieur à 1.")
   if not type(text) == str: raise TypeError("\n\tParamètre 'text' : Le contenu n'est pas un Str.")
   if not type(separator) == str: raise TypeError("\n\tParamètre 'separator' : Le contenu n'est pas un Str.")
   if separator == "": raise ValueError("\n\tParamètre 'separator' : Le séparateur est vide.")
 ### ^ Testing fonction ^ ###
-  def __main__(text,letters,separator,Nb):
+  def __main__(text,letters,separator):
     index,__temp__,back,worlds,cutter=0,"",separator,"","\n"
-    worlds=insert(letters,text[index],cutter)
-    for i in range(Nb):
+    worlds=insert(letters,text[index],cutter,True)
+    while True:
       try:
-        if (len(worlds+text[index+1]) >= letters) or worlds.endswith("\n"):
-          __temp__=cutter.join([__temp__,worlds])
-          worlds,separator="",cutter       
-        else if :
-        else:          
+        if not len(worlds+text[index+1]) >= letters:
           index+=1
           worlds=separator.join([worlds,text[index]])
           if separator == cutter: separator=back
-        #print(worlds)
-      except IndexError: None
+        elif len(text[index+1]) >= letters:
+          index+=1
+          worlds=insert(letters,text[index],cutter)
+          worlds=worlds.splitlines()
+          try:
+            text.insert(index+1,worlds[1])
+            worlds.pop(1)
+          except IndexError: ...
+          worlds="".join(worlds)
+        else:
+          __temp__=cutter.join([__temp__,worlds])
+          worlds,separator="",cutter 
+  ### v Debug line v ###
+  #      print(index,":",[worlds],":",((len(worlds+text[index]) >= letters) or worlds.endswith("\n")))
+  ### ^ Debug line ^ ###
+      except IndexError: break
+    worlds="".join(worlds)
     if not worlds == "": __temp__=cutter.join([__temp__,worlds])
     return __temp__
 
-  if letters == 0: letters=27
-  if letters == 1: letters=42
+  if letters == False: letters=27
+  if letters == True: letters=42
   if separator == "\n": separator=" "
-  Nb=len(text)
   if full: 
     text=text.split(separator)
-    text=__main__(text,letters,separator,Nb)
+    text=__main__(text,letters,separator)
   else: text=insert(letters, text,"\n",True)
-  print([text])
   text=text.splitlines()
   for i in range(text.count("")): text.remove("")
   return text
@@ -191,10 +200,17 @@ def insert(index,object,add,repeat=False):
       if i == index: 
         __temp__+=str(add)
         if repeat: index+=__save__
-        #print(index,":",i,":",__temp__)
+  ### v Debug line v ###
+  #      print(index,":",i,":",__temp__)
+  ### ^ Debug line ^ ###
     except IndexError: ...
     __temp__+=object[i]
   if (not len(object) % __save__) and repeat: __temp__+=str(add)
   return __temp__
 
 ######Fonction separator######
+
+x="Les boucles énumérées sont des boucles qui sont utilisées si vous savez à l'avance combien de fois vous voulez faire une boucle. En Java, cela s'appelle des boucles for."
+list_=AIsplit(6,x,full=True)
+print(list_)
+super_print(False,list_)
