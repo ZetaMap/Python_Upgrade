@@ -108,45 +108,26 @@ def AIsplit(letters,text,separator=" ",full=True):
   if not type(separator) == str: raise TypeError("\n\tParamètre 'separator' : Le contenu n'est pas un Str.")
   if separator == "": raise ValueError("\n\tParamètre 'separator' : Le séparateur est vide.")
 ### ^ Testing fonction ^ ###
-  def __main__(text,letters,separator):
-    index,__temp__,back,worlds,cutter=0,"",separator,"","\n"
-    worlds=insert(letters,text[index],cutter,True)
-    while True:
-      try:
-        if not len(worlds+text[index+1]) >= letters:
-          index+=1
-          worlds=separator.join([worlds,text[index]])
-          if separator == cutter: separator=back
-        elif len(text[index+1]) >= letters:
-          index+=1
-          worlds=insert(letters,text[index],cutter)
-          worlds=worlds.splitlines()
-          try:
-            text.insert(index+1,worlds[1])
-            worlds.pop(1)
-          except IndexError: ...
-          worlds="".join(worlds)
-        else:
-          __temp__=cutter.join([__temp__,worlds])
-          worlds,separator="",cutter 
-  ### v Debug line v ###
-  #      print(index,":",[worlds],":",((len(worlds+text[index]) >= letters) or worlds.endswith("\n")))
-  ### ^ Debug line ^ ###
-      except IndexError: break
-    worlds="".join(worlds)
-    if not worlds == "": __temp__=cutter.join([__temp__,worlds])
-    return __temp__
-
   if letters == False: letters=27
   if letters == True: letters=42
   if separator == "\n": separator=" "
   if full: 
-    text=text.split(separator)
-    text=__main__(text,letters,separator)
-  else: text=insert(letters, text,"\n",True)
-  text=text.splitlines()
-  for i in range(text.count("")): text.remove("")
-  return text
+    text,index=text.split(separator),0
+    for i in text:
+      if len(i) > letters: 
+        __temp__=insert(letters,i,"\n",True).splitlines()
+        del text[index]
+        for object in range(len(__temp__)): text.insert(index+object,__temp__[object])
+        __temp__=[]
+      index+=1
+    for i in range(len(text)):
+      try: 
+        if not len(text[i]+text[i+1]) >= letters: 
+          text[i+1]=separator.join([text[i],text[i+1]])
+          del text[i]
+      except IndexError: break
+    return text
+  else: return insert(letters, text,"\n",True)
 
 ######Fonction separator######
 
@@ -194,18 +175,19 @@ def insert(index,object,add,repeat=False):
   if type(object) == type: raise TypeError("cannot insert 'object' into a type")
   if not type(repeat) == bool: raise TypeError("'repeat' must be a boolean")
 ### ^ Testing fonction ^ ###
-  __temp__,__save__='',index
+  __temp__,save='',index
   for i in range(len(object)+1):
     try:
       if i == index: 
         __temp__+=str(add)
-        if repeat: index+=__save__
+        if repeat: index+=save
   ### v Debug line v ###
   #      print(index,":",i,":",__temp__)
   ### ^ Debug line ^ ###
       __temp__+=object[i]
     except IndexError: ...
-  if (not len(object) % __save__) and repeat: __temp__+=str(add)
+  if (not len(object) % save) and repeat: __temp__+=str(add)
   return __temp__
 
 ######Fonction separator######
+
