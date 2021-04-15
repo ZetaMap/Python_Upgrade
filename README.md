@@ -64,10 +64,10 @@ Descriptions :
         "fill" (passif) demande si vous souhaitez remplir l'écran, s'il n'y a pas assez de texte pour le faire (par défaut : fill=False). False = pas de remplissage ; True = remplissage.(⚠️Le remplissage sera automatique si le paramètre "page" est à 1 ou >1 ⚠️).
 
         "valid" (passif) indique si vous souhaitez mettre un petit message dans la zone d'input (comme : OK, ou retour, ...)(par défaut : valid=False). False = rien ; 1 = OK ; 2 = Retour ; 3 = Cancel.
-
+.
 
     len2() : Une fonction presque pareil à len(). Mais grâce à cette fonction, vous pouvez lire absolument tout (chaine de nombre, caractère ou des listes).
-
+.
 
     AIsplit() : Une fonction split() très avancée, qui vous retournera une liste avec chaque occurrence correspondant à une ligne de votre écran. Vous pouvez aussi changer le séparateur qui servira de découpe, et lui dire si vous voulez que les mots soient entiers ou pas.
 
@@ -78,14 +78,14 @@ Descriptions :
         "separator" (passif) dit au programme ce qu'il doit considérer comme un mot (par défaut : separator=" ").
 
         "full" (passif) dit au programme si vous voulez que les mots soient entiers ou pas lors de la découpe, sauf si il est obligé de couper. (par défaut : full=True)
-
+.
 
     list2print() : Une fonction un peu plus avancées que print(). Une fonction vous permettant de circuler dans une liste affichée à l'écran avec ↑ ou ↓.
 
         "list_" (obligatoire) demande de fournir à la fonction une liste à afficher. (⚠️chaque séparation dans la liste désigne une ligne à l'écran⚠️)
 
         "lines" (obligatoire) vous demande nombre de lignes que votre écran peut afficher.
-
+.
 
     insert() : Une fonction comme : list.insert(). Mais celle-ci peut introduire une chaine de caractères dans une autre à l'index donné.
 
