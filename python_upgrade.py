@@ -19,12 +19,14 @@ def super_print(screen,list_,page=True,fill=False,valid=False):
       if len(screen) == 2 and screen[0].isdigit() and screen[1].isdigit(): lines,letters=int(screen[0]),int(screen[1])
       else: raise TypeError("\n\tParamètre 'screen' : Le format de résolution n'est pas valide. (format : '<lignes>x<lettres>')")
     Nb,index,Nb_page=len(list_),0,0
-    if page:
-      page=Nb//(lines-1)
-      if Nb%(lines-1): page+=1
+    try:
+      if page == True:
+        page=Nb//(lines-1)
+        if Nb%(lines-1): page+=1
+    except ZeroDivisionError: raise ValueError("\n\tParamètre 'screen' : Le contenu n'est pas valide.")
     return letters,lines,index,Nb,Nb_page,page
   
-  def printing(list_,Nb,index,lines,letters):
+  def printing(list_,Nb,index,lines):
     try:
       print()
       for i in range(Nb):
@@ -35,7 +37,7 @@ def super_print(screen,list_,page=True,fill=False,valid=False):
     return lines,index
 
   def filling(fill,lines):
-    if fill:
+    if fill == True:
       for i in range(lines): print()
 
   def page_indexing(letters,page,Nb_page):
@@ -46,19 +48,19 @@ def super_print(screen,list_,page=True,fill=False,valid=False):
     return page,Nb_page
 
   def scanAndprint(list_,page,fill,Nb,Nb_page,index,lines,letters,left=False):
-    if page == True:
-      lines,index=printing(list_,Nb,index,lines,letters)
+    if page == False:
+      lines,index=printing(list_,Nb,index,lines)
       filling(fill,lines)
 
     if page == True or page >=2:
       lines-=1
-      if left:
+      if left == True:
         for i in range(Nb):
           if not index%lines: break
           index+=1
         index+=-lines*2
       if Nb>lines: Nb=lines
-      lines,index=printing(list_,Nb,index,lines,letters)
+      lines,index=printing(list_,Nb,index,lines)
       filling(True,lines)
       page,Nb_page=page_indexing(letters,page,Nb_page)
   ### v Debug line v ###
@@ -111,7 +113,7 @@ def AIsplit(letters,text,separator=" ",full=True):
   if letters == False: letters=27
   if letters == True: letters=42
   if separator == "\n": separator=" "
-  if full: 
+  if full == True: 
     text,index=text.split(separator),0
     for i in text:
       if len(i) > letters: 
@@ -120,12 +122,13 @@ def AIsplit(letters,text,separator=" ",full=True):
         for object in range(len(__temp__)): text.insert(index+object,__temp__[object])
         __temp__=[]
       index+=1
-    for i in range(len(text)):
+    for i in range(len(text)*int(letters/2)):
       try: 
         if not len(text[i]+text[i+1]) >= letters: 
           text[i+1]=separator.join([text[i],text[i+1]])
           del text[i]
       except IndexError: break
+    #for i in range(text.count(" ")): text.remove(" ")
     return text
   else: return insert(letters, text,"\n",True)
 
@@ -186,8 +189,34 @@ def insert(index,object,add,repeat=False):
   ### ^ Debug line ^ ###
       __temp__+=object[i]
     except IndexError: ...
-  if (not len(object) % save) and repeat: __temp__+=str(add)
+  if (not len(object) % save) and repeat == True: __temp__+=str(add)
   return __temp__
 
 ######Fonction separator######
 
+def reverse(object):
+  if type(object) == str:
+    output, index="", len(object)
+    for i in range(index):
+      output+=object[index-i-1]
+    return output
+    
+  elif type(object) == list: 
+    object.reverse()
+    return object
+
+  elif type(object) == dict:
+    output={}
+    for (key, value) in object.items():
+      output.update({str(value): key})
+    return output
+
+  elif type(object) == tuple:
+    output, index=(), len(object)
+    for i in range(index):
+      output+=(object[index-i-1],)
+    return output
+  
+  else: raise TypeError("type '{}' isn't accepted".format(type(object)))
+
+######Fonction separator######
