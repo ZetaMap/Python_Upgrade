@@ -4,7 +4,7 @@ Dernière mise à jour : 26/05/2021 - 17:40<br />
 ————<br />
 <strong>⚠️Programme en cours de développement !⚠️</strong><br />
 Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme.
-<ul></ul>----------
+<ul></ul>----------<br>
 Fonctions :<br>
 <ul>
 <li>super_print(screen , list_ , page , fill , valid)</li></ul>
@@ -18,13 +18,13 @@ Fonctions :<br>
 <li>insert(index , object , add , repeat)</li></ul>
 <ul>
 <li>reverse(object)</li></ul>
-<ul></ul>----------
+<ul></ul>----------<br>
 Dépendances :<br>
 <ul>
 <li>ion module</li></ul>
 <ul>
 <li>time module</li></ul>
-<ul></ul>----------
+<ul></ul>----------<br>
 Descriptions :<br>
 <ul>
 <li><strong>super_print() :</strong> Une fonction print() extrêmement avancé et modulable qui peut créer des livres, si vous le voulez XD. La fonction peut aussi renvoyer "True" si un message du paramètre "valid" est accepté sinon "False".</li></ul>
@@ -68,5 +68,5 @@ Descriptions :<br>
 <ul><li>"repeat" <strong>(passif)</strong> dit au programme si vous voulez que l'opération soit répété jusqu'au bout de la chaine de caractères.</li></ul></ul><br>
 <ul>
 <li><strong>reverse() :</strong> Une fonction plus avancer que sont original. Elle peut inverser des objets dans presque tous les types (str, list, dict, tuple).</li></ul>
-<ul></ul>----------
+<ul></ul>----------<br>
 <strong>Concernant toute demande, problème ou suggestion avec ce script, veuillez me contacter sur mon Discord : BTA_Susideur#5093.</strong>
