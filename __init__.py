@@ -5,6 +5,8 @@ LARGE_FONT = (27,11)
 SMALL_FONT = (40, 14)
 
 def print_book(screen, text, wholeWords=True):
+  """<description>
+  """
   ### v Testing fonction v ###
   type_test(screen, tuple)
   if len(screen) != 2: raise IndexError("invalid resolution format. (accepted: (letters, lines))")
@@ -54,6 +56,8 @@ def print_book(screen, text, wholeWords=True):
 ######Fonction separator######
 
 def len2(_object):
+  """<description>
+  """
   try: return len(_object)
   except TypeError: 
     if type(_object) == type: return len(_object.__name__)
@@ -61,76 +65,53 @@ def len2(_object):
 
 ######Fonction separator######
 
-def words_wrap(text, width, wholeWords=True, breakLongWords=True, wrapper='\n', limit=None, end=" [...]"):
+def words_wrap(text, width, wholeWords=True, wrapper=' ', limit=None, end=" [...]"):
+  """<description>
+  """
 ### v Testing fonction v ###
   type_test(text, str)
   type_test(width, int)
   type_test(wholeWords, bool)
-  type_test(breakLongWords, bool)
   type_test(wrapper, str)
   type_test(limit, int, True)
   if limit != None: 
     if limit < 0: return text
     elif limit < len(end): return ''
     elif limit == len(end): return end
-    elif limit > len(text): limit = len(text)
   type_test(end, str)
 ### ^ Testing fonction ^ ###
 
-  index, output, textSize = 0, "", len(text)
-
-  if wholeWords:
-    for i in range(textSize if limit == None or limit >= textSize else limit-len(end)):
-      if index == width:
-        if text[i] == ' ': 
-          output += ' '
-          continue
-        elif text[i] == wrapper: continue
-
-        try: test = cut(output, output.rindex(' '))
-        except ValueError: 
-          if breakLongWords: 
-            test = cut(output, i)
-            output = test[0]+wrapper+test[1]
-          index = 0
-          continue
+  output, wrapperSize, lines = "", len(wrapper), text.splitlines()
+  
+  for i, line in enumerate(lines):
+    linesSize, line = len(lines), cut(line, width)
+    
+    if wholeWords:
+      t = not (line[0].endswith(wrapper) or line[1].startswith(wrapper))
+      if wrapper in line[0].lstrip(wrapper) and t and line[1] != '':
+        line[0] = line[0].rstrip(wrapper)
+        test = cut(line[0], line[0].rindex(wrapper))
+        line[0], line[1] = test[0], test[1][0 if t else wrapperSize:]+line[1]
         
-        output = test[0].rstrip(' ')+wrapper+test[1][1:]
-        index = len(test[1][1:])
-      
-      elif text[i] == wrapper: 
-        if i > 1 and text[i-1] == ' ': output = output.rstrip(' ')
-        if textSize-1 > i and text[i+1] == ' ': 
-          output += ' '
-          continue
-        index = 0
+    output += line[0].rstrip(wrapper)+'\n'
+    if line[1] != '':
+      if i < linesSize: lines.insert(i+1, line[1])
+      else: lines.append(line[1])
 
-      output += text[i]
-      index += 1
+  if limit != None:
+    output = cut(output, limit-len(end))
 
-    if limit != None and limit < textSize:
-      if textSize-1 > i and text[i+1] != ' ': 
-        try: output = cut(output, output.rindex(' '))[0]
-        except ValueError: return end
-
-      output += end
-      test = output.rsplit(wrapper, 1)
-
-      try: return insert(output, output.rindex(' '), wrapper) if len(test[1] if len(test) != 1 else test[0]) > width else output
-      except ValueError:
-        if breakLongWords: return insert(output, width, wrapper)
-  
-  else: 
-    output = insert(text, width, wrapper, True)
-    if limit != None: 
-      output = cut(output, limit-len(end))[0]+end
-      return insert(output, len(output)-len(output)//width, wrapper)
-  
-  return output.rstrip(wrapper)
+    if wholeWords and len(''.join(output)) > limit-wrapperSize: 
+      return cut(output[0], output[0].rindex(wrapper) if wrapper in output[0] else 0)[0]+end
+    
+    else: return output[0].rstrip('\n'+wrapper)
+  else: return output.rstrip('\n'+wrapper)
 
 ######Fonction separator######
 
 def print_list(screen, text, wholeWords=True, justTheList=False):
+  """<description>
+  """
   ### v Testing fonction v ###
   type_test(screen, tuple)
   if len(screen) != 2: raise IndexError("invalid resolution format. (accepted: (letters, lines))")
@@ -142,16 +123,21 @@ def print_list(screen, text, wholeWords=True, justTheList=False):
   ### ^ Testing fonction ^ ###
 
   def main():
-    _list, loop = text[index:index+lines], min(lines, len(text))
-    c =  ['^']
+    _list = text[index:index+lines]
+    scrollbar =  ['^']
 
-    for i in range(loop-2): 
-      c += ['|']
-    c += ['v']
+    # I don't finish this part
+    for i in range(lines-2): 
+      print(textSize, lines, index)
+      scrollbar += ['#'] if False else ['|']
+    scrollbar += ['v']
+    ##########################
 
     print()
-    for i in range(loop): 
-      print(_list[i].ljust(letters+1)+c[i])
+    for i in range(lines): 
+      try: print(_list[i].ljust(letters+1), end='')
+      except IndexError: print(''.ljust(letters+1), end='')
+      print(scrollbar[i])
 
   letters, lines, index = screen[0] if justTheList else screen[0]-2, screen[1], 0
   if type(text) == str: text = words_wrap(text, letters, wholeWords).splitlines()
@@ -178,6 +164,8 @@ def print_list(screen, text, wholeWords=True, justTheList=False):
 ######Fonction separator######
 
 def insert(_object, index, add, repeat=False):
+  """<description>
+  """
 ### v Testing fonction v ###
   type_test(index, int)
   objectType = type_test(_object, [str, list, tuple])
@@ -201,6 +189,8 @@ def insert(_object, index, add, repeat=False):
 ######Fonction separator######
 
 def reverse(_object):
+  """<description>
+  """
   if type(_object) == bool: return not _object
   
   elif type(_object) == str:
@@ -245,6 +235,8 @@ def reverse(_object):
 ######Fonction separator######
 
 def mjust(left, right, lenght, fill=' '):
+  """<description>
+  """
   ### v Testing fonction v ###
   type_test(left, str)
   type_test(right, str)
@@ -259,6 +251,8 @@ def mjust(left, right, lenght, fill=' '):
 ######Fonction separator######
 
 def type_test(_object, _type, canBeNone=False, withError=True, contentException=None):
+  """<description>
+  """
   ### v Testing fonction v ###  
   if not callable(_type) and type(_type) == list:
     if len(_type) == 0: raise IndexError("the type list must have at least one occurrence")
@@ -294,6 +288,8 @@ def type_test(_object, _type, canBeNone=False, withError=True, contentException=
 ######Fonction separator######
 
 def cut(string, index, repeat=False):
+  """<description>
+  """
   ### v Testing fonction v ###
   type_test(string, str)
   type_test(index, int)
