@@ -16,14 +16,11 @@
 * **type_test**(_object , _type , canBeNone, withError , contentException)
 * **cut**(string , index , repeat)
 
-----------
-Dépendances :<br />
-<ul>
-<li>ion module</li></ul>
-<ul>
-<li>time module</li></ul>
-----------
-Descriptions :<br />
-<ul>test</ul>
-----------
-<strong>Concernant toute demande, problème ou suggestion avec ce script, veuillez me contacter sur mon Discord : BTA_Susideur#5093.</strong>
+### Dépendances :
+* ion module
+* time module
+
+### Descriptions :
+* test
+
+**Concernant toute demande, problème ou suggestion avec ce script, c'est ici.**
