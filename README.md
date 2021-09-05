@@ -25,14 +25,14 @@ Fonctions :<br>
 <ul>
 <li><strong>cut</strong>(string , index , repeat)</li>
 </ul>
-----------
-Dépendances :
+<p>----------</p>
+Dépendances :<br />
 <ul>
 <li>ion module</li></ul>
 <ul>
 <li>time module</li></ul>
-----------
-Descriptions :<br .>
+<p>----------</p>
+Descriptions :<br />
 <ul>test</ul>
 ----------
 <strong>Concernant toute demande, problème ou suggestion avec ce script, veuillez me contacter sur mon Discord : BTA_Susideur#5093.</strong>
