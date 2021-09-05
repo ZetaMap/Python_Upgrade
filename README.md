@@ -22,6 +22,6 @@
 
 ### Descriptions :
 * **print_book :**
-* * Met en forme un texte aux dimensions donné, coupe le texte par page, et lance une boucle pour pouvoir y circuler. <br>Si 'text' est une liste, chaque occurrence de cette liste sera considérée comme une page.
+  * Met en forme un texte aux dimensions donné, coupe le texte par page, et lance une boucle pour pouvoir y circuler. <br>Si 'text' est une liste, chaque occurrence de cette liste sera considérée comme une page.
 
 **Concernant toute demande, problème ou suggestion avec ce script, c'est [ici](https://github.com/Susideur/Python_Upgrade/issues/new).**
