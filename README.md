@@ -2,10 +2,9 @@
 
 ## Création : 21/01/2021 
 ## Dernière mise à jour : 5/09/2021 - 16:21 
-## **⚠️Programme en cours de développement !⚠️** 
-## Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme.
+### **⚠️Programme en cours de développement !⚠️** 
+### Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme.
 
-----------
 ### Fonctions :
 * **print_book**(screen , text ,  wholeWords , onlyOnePage , printFooter)
 * **len2**(_object)
