@@ -1,11 +1,18 @@
 from ion import keydown,KEY_LEFT,KEY_RIGHT,KEY_UP,KEY_DOWN,KEY_EXE,KEY_OK
 from time import sleep
 
+# screen resolution of Numworks
 LARGE_FONT = (27,11)
 SMALL_FONT = (40, 14)
+###############################
 
-def print_book(screen, text, wholeWords=True):
-  """<description>
+def print_book(screen, text, wholeWords=True, onlyOnePage=None, printFooter=True):
+  """Lay out a text ('text') with the given dimensions ('screen'), split the text by page, and start a loop to be able to circulate in it.
+\nIf 'text' is a list, each occurrence of this list will be considered a page.
+
+\tparameter 'wholeWords': If False, the function will just place a line break when screen width is exceeded. (default 'wholeWords'=True)
+\tparameter 'onlyOnePage': Will only display the indicated page without launching the loop. If 'onlyOnePage'>max_page or 'onlyOnePage'<-max_page: raise IndexError(). (default 'onlyOnePage'=None)
+\tparameter 'printFooter': If True, will use a line on the screen to display the footer. (default 'printFooter'=True)
   """
   ### v Testing fonction v ###
   type_test(screen, tuple)
@@ -15,19 +22,20 @@ def print_book(screen, text, wholeWords=True):
     if i < 2: raise ValueError("invalid resolution values. (min values: 2)")
   type_test(text, [str, list])
   type_test(wholeWords, bool)
+  type_test(onlyOnePage, int, True)
+  type_test(printFooter, bool)
   ### ^ Testing fonction ^ ###
 
   def main():
-    index = (page-1)*lines
+    index = page*lines
     _list = text[index:index*2 if index != 0 else lines]
-    rest = lines-len(_list)
 
     print()
     for i in _list: print(i)
-    for i in range(rest): print()
-    print(mjust("[EXE]: exit ", " p.{}/{}".format(page,pages), letters))
+    for i in range(lines-len(_list)): print()
+    if printFooter: print(mjust("[EXE]: exit ", " p.{}/{}".format(page+1,pages), letters))
 
-  letters, lines, page = screen[0], screen[1]-1, 1
+  letters, lines, page = screen[0], screen[1]-1 if printFooter else screen[1], 0
   if type(text) == str: text = words_wrap(text, letters, wholeWords).splitlines()
   else:
     text = []
@@ -38,25 +46,33 @@ def print_book(screen, text, wholeWords=True):
   textSize = len(text)
   pages = textSize//(lines+1)
   if textSize%(lines-1): pages+=1
+  
+  if onlyOnePage != None:
+    if onlyOnePage >= 0: page = onlyOnePage
+    else: page = pages-onlyOnePage
+    if page < 0 or page >= pages: raise IndexError("'page' must be greater than 0 and lower than "+str(pages-1))
 
   main()
-  sleep(0.2)
-  while True:
-    if keydown(KEY_EXE) or keydown(KEY_OK): break
-    elif keydown(KEY_LEFT) and page > 1:
-      page-=1
-      main()
-      sleep(0.2)
+  if onlyOnePage == None:
+    sleep(0.2)
+    while True:
+      if keydown(KEY_EXE) or keydown(KEY_OK): break
+      elif keydown(KEY_LEFT) and page > 0:
+        page-=1
+        main()
+        sleep(0.2)
 
-    elif keydown(KEY_RIGHT) and page < pages:
-      page+=1
-      main()
-      sleep(0.2)
+      elif keydown(KEY_RIGHT) and page < pages-1:
+        page+=1
+        main()
+        sleep(0.2)
 
 ######Fonction separator######
 
 def len2(_object):
-  """<description>
+  """Returns the length of an object. Works with all types.
+
+\nExample: 1111111 -> 7 or 'abcde' -> 5
   """
   try: return len(_object)
   except TypeError: 
@@ -66,7 +82,17 @@ def len2(_object):
 ######Fonction separator######
 
 def words_wrap(text, width, wholeWords=True, wrapper=' ', limit=None, end=" [...]"):
-  """<description>
+  """This function allows to wrap/fill the text ('text') according to the width of a line ('width'). 
+
+\nThis function is less advanced than textwrap.TextWrapper() but compared to this function,
+this one allows to keep the structure of the text and to automatically cut the words which are larger than 'width'.
+
+\nIt is also possible to indicate to him if we want to keep the whole words ('wholeWords'). 
+If 'wholeWords' = False, the function will just place a line break when 'width' is exceeded.
+
+\tparameter 'wrapper': Tells the function what to consider a word. (default 'wrapper'=space character)
+\tparameter 'limit': Specifies the character limit of the text. If 'limit'=None, there is no character limit. (default 'limit'=None)
+\tparameter 'end': the string that ends the text if 'limit' is exceeded. Its length is taken into account in 'limit'.
   """
 ### v Testing fonction v ###
   type_test(text, str)
@@ -95,8 +121,8 @@ def words_wrap(text, width, wholeWords=True, wrapper=' ', limit=None, end=" [...
         
     output += line[0].rstrip(wrapper)+'\n'
     if line[1] != '':
-      if i < linesSize: lines.insert(i+1, line[1])
-      else: lines.append(line[1])
+      if i < linesSize: lines.insert(i+1, line[1][wrapperSize if line[1].startswith(wrapper) else 0:])
+      else: lines.append(line[1][wrapperSize if line[1].startswith(wrapper) else 0:])
 
   if limit != None:
     output = cut(output, limit-len(end))
@@ -109,8 +135,13 @@ def words_wrap(text, width, wholeWords=True, wrapper=' ', limit=None, end=" [...
 
 ######Fonction separator######
 
-def print_list(screen, text, wholeWords=True, justTheList=False):
-  """<description>
+def print_list(screen, text, wholeWords=True, onlyOneIndex=None, printScrollbar=True):
+  """Cut the lines of a text into a list, print this list vertically, and start a loop to be able to circulate in it.
+\nIf 'text' is a list, each occurrence of this list will be considered as a line.
+ 
+\tparameter 'wholeWords': If False, the function will just place a line break when screen width is exceeded. (default 'wholeWords'=True)
+\tparameter 'onlyOneIndex': Will only display the text at the given index without start the loop. If 'onlyOneIndex'>max_index or 'onlyOneIndex'<-max_index: raise IndexError().
+\tparameter 'printScrollbar': If True, will use 2 letters per line on the screen to display the scrollbar. (default 'printScrollbar'=True)
   """
   ### v Testing fonction v ###
   type_test(screen, tuple)
@@ -119,35 +150,42 @@ def print_list(screen, text, wholeWords=True, justTheList=False):
     if i < 2: raise ValueError("invalid resolution values. (min values: 2)")
   type_test(text, [str, list])
   type_test(wholeWords, bool)
-  type_test(justTheList, bool)
+  type_test(onlyOneIndex, int, True)
+  type_test(printScrollbar, bool)
   ### ^ Testing fonction ^ ###
 
   def main():
     _list = text[index:index+lines]
-    scrollbar =  ['^']
+    scrollbar = ['^']
 
     # I don't finish this part
-    for i in range(lines-2): 
-      print(textSize, lines, index)
-      scrollbar += ['#'] if False else ['|']
-    scrollbar += ['v']
+    if printScrollbar:
+      for i in range(lines-2): scrollbar += ['#'] if False else ['|']
+      scrollbar += ['v']
     ##########################
 
     print()
-    for i in range(lines): 
-      try: print(_list[i].ljust(letters+1), end='')
-      except IndexError: print(''.ljust(letters+1), end='')
-      print(scrollbar[i])
+    if printScrollbar:
+      for i in range(lines): 
+        try: print(_list[i].ljust(letters+1)+scrollbar[i])
+        except IndexError: print(''.ljust(letters+1)+scrollbar[i])    
+    else:
+      for i in range(lines): 
+        try: print(_list[i])
+        except IndexError: print()  
 
-  letters, lines, index = screen[0] if justTheList else screen[0]-2, screen[1], 0
+  letters, lines, index = screen[0]-2 if printScrollbar else screen[0], screen[1], 0
   if type(text) == str: text = words_wrap(text, letters, wholeWords).splitlines()
   else: text = words_wrap('\n'.join(text), letters, wholeWords).splitlines()
   textSize = len(text)
 
-  if justTheList: [print(i) for i in text]
-  else:
-    main()
-
+  if onlyOneIndex != None:
+    if onlyOneIndex >= 0: index = onlyOneIndex
+    else: index = textSize-onlyOneIndex
+    if index < 0 or index >= textSize: raise IndexError("'index' must be greater than 0 and lower than "+str(textSize-1))
+  
+  main()
+  if onlyOneIndex == None:
     sleep(0.2)
     while True:
       if keydown(KEY_EXE) or keydown(KEY_OK): break
@@ -164,11 +202,13 @@ def print_list(screen, text, wholeWords=True, justTheList=False):
 ######Fonction separator######
 
 def insert(_object, index, add, repeat=False):
-  """<description>
+  """Allows you to insert an object ('add') into another ('_object') at a given index ('index').
+
+\nThe 'repeat' parameter allows you to repeat this action.
   """
 ### v Testing fonction v ###
-  type_test(index, int)
   objectType = type_test(_object, [str, list, tuple])
+  type_test(index, int)
   type_test(repeat, bool)
 ### ^ Testing fonction ^ ###
 
@@ -183,13 +223,16 @@ def insert(_object, index, add, repeat=False):
   ### ^ Debug line ^ ###
       __temp__.append(_object[i])
     except IndexError: ...
-  if (not len(_object) % (save if save != 0 else 1)) and repeat == True: __temp__.append(str(add) if objectType == str else add)
+  if (not len(_object) % (save if save != 0 else 1)) and repeat == True: 
+    __temp__.append(str(add) if objectType == str else add)
   return ''.join(__temp__) if objectType == str else objectType(__temp__)
 
 ######Fonction separator######
 
 def reverse(_object):
-  """<description>
+  """Returns the inverse of the given object. Works with almost all types.
+
+\nExample: 1234 -> 4321   or   {'a': 1234} -> {'1234': 'a'}
   """
   if type(_object) == bool: return not _object
   
@@ -234,24 +277,30 @@ def reverse(_object):
 
 ######Fonction separator######
 
-def mjust(left, right, lenght, fill=' '):
-  """<description>
+def mjust(left, right, width, fill=' '):
+  """Return a middle-justified string of length 'width'.
+
+\nPadding is done using the specified fill character (default is a space).
   """
   ### v Testing fonction v ###
   type_test(left, str)
   type_test(right, str)
-  type_test(lenght, int)
+  type_test(width, int)
   type_test(fill, str)
   if len(fill) != 1: raise TypeError('The fill character must be exactly one character long')
   ### ^ Testing fonction ^ ###
 
-  while len(left+right) < lenght: left += fill
+  while len(left+right) < width: left += fill
   return left+right
 
 ######Fonction separator######
 
 def type_test(_object, _type, canBeNone=False, withError=True, contentException=None):
-  """<description>
+  """Allows you to test an object ('_object') with a type or a type list ('_type'), 
+and tell it if we want it to return an error or the correct type ('withError'), by default 'withError' = True.
+
+\nIt is also possible to tell it if the object can be None ('canBeNone') 
+and/or if you want to ignore a content ('contentException').
   """
   ### v Testing fonction v ###  
   if not callable(_type) and type(_type) == list:
@@ -263,14 +312,20 @@ def type_test(_object, _type, canBeNone=False, withError=True, contentException=
 
   if canBeNone:
     for i in _type:
-      if _object == None or type(_object) == i or _object == contentException: 
+      if _object == None or type(_object) == i: 
         correct = i
+        break
+      elif _object == contentException: 
+        correct = True
         break
       else: correct = False
   else:
     for i in _type:
-      if type(_object) == i or (contentException != None and _object == contentException): 
+      if type(_object) == i: 
         correct = i
+        break
+      elif contentException != None and _object == contentException:
+        correct = True
         break
       else: correct = False
 
@@ -288,7 +343,9 @@ def type_test(_object, _type, canBeNone=False, withError=True, contentException=
 ######Fonction separator######
 
 def cut(string, index, repeat=False):
-  """<description>
+  """This function cuts a string to a given index and always returns a list with at least 2 occurrences.
+
+\nShe's especially useful when one wants to repeat this action several times, it is the purpose of the 'repeat' parameter.
   """
   ### v Testing fonction v ###
   type_test(string, str)
