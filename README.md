@@ -23,7 +23,8 @@ Fonctions :<br>
 <ul>
 <li><strong>type_test</strong>(_object , _type , canBeNone, withError , contentException)</li></ul>
 <ul>
-<li><strong>cut</strong>(string , index , repeat)</li></ul>
+<li><strong>cut</strong>(string , index , repeat)</li>
+</ul>
 ----------
 Dépendances :<br />
 <ul>
