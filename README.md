@@ -5,7 +5,7 @@ Dernière mise à jour : 5/09/2021 - 16:21<br />
 <strong>⚠️Programme en cours de développement !⚠️</strong><br />
 Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme.<br />
 ----------
-Fonctions :<br>
+Fonctions :<br />
 <ul>
 <li><strong>print_book</strong>(screen , text ,  wholeWords , onlyOnePage , printFooter)</li></ul>
 <ul>
@@ -23,18 +23,15 @@ Fonctions :<br>
 <ul>
 <li><strong>type_test</strong>(_object , _type , canBeNone, withError , contentException)</li></ul>
 <ul>
-<li><strong>cut</strong>(string , index , repeat)
- </li></ul>
+<li><strong>cut</strong>(string , index , repeat)</li></ul>
 ----------
-<br>Dépendances :<br>
+Dépendances :<br />
 <ul>
 <li>ion module</li></ul>
 <ul>
-<li>time module
- </li></ul>
+<li>time module</li></ul>
 ----------
-<br>Descriptions :<br>
-<ul>test
-</ul>
+Descriptions :<br .>
+<ul>test</ul>
 ----------
-<br><strong>Concernant toute demande, problème ou suggestion avec ce script, veuillez me contacter sur mon Discord : BTA_Susideur#5093.</strong>
+<strong>Concernant toute demande, problème ou suggestion avec ce script, veuillez me contacter sur mon Discord : BTA_Susideur#5093.</strong>
