@@ -5,6 +5,7 @@
 ## **⚠️Programme en cours de développement !⚠️** 
 ## Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme.
 
+----------
 ### Fonctions :
 * **print_book**(screen , text ,  wholeWords , onlyOnePage , printFooter)
 * **len2**(_object)
