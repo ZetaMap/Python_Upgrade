@@ -5,7 +5,6 @@ Dernière mise à jour : 5/09/2021 - 16:21<br />
 <strong>⚠️Programme en cours de développement !⚠️</strong><br>
 Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme.<br>
 ----------
-
 Fonctions :<br>
 <ul>
 <li><strong>print_book</strong>(screen , text ,  wholeWords , onlyOnePage , printFooter)</li></ul>
@@ -27,7 +26,7 @@ Fonctions :<br>
 <li><strong>cut</strong>(string , index , repeat)</li>
 </ul>
 ----------
-Dépendances :<br />
+Dépendances :
 <ul>
 <li>ion module</li></ul>
 <ul>
