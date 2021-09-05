@@ -23,4 +23,4 @@
 ### Descriptions :
 * test
 
-**Concernant toute demande, problème ou suggestion avec ce script, c'est (ici)[https://github.com/Susideur/Python_Upgrade/issues/new].**
+**Concernant toute demande, problème ou suggestion avec ce script, c'est [ici](https://github.com/Susideur/Python_Upgrade/issues/new).**
