@@ -62,4 +62,4 @@
   * Cette fonction coupe une chaîne à un index donné et retourne toujours une liste avec au moins 2 occurrences.
   * Elle est particulièrement utile lorsque l'on veut répéter cette action plusieurs fois, c'est le but du paramètre 'repeat'. 
 
-**Concernant toute demande, problème ou suggestion avec ce script, c'est [ici](https://github.com/Susideur/Python_Upgrade/issues/new).**
+**Concernant toute demande, problème ou suggestion avec ce script, c'est [ici](https://github.com/ZetaMap/Python_Upgrade/issues/new).**
