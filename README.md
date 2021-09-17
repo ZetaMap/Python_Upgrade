@@ -1,7 +1,7 @@
-# Python_Upgrade (v9.1)
+# Python_Upgrade (v9.2)
 
 ## Création : 21/01/2021 
-## Dernière mise à jour : 5/09/2021 - 19:02 
+## Dernière mise à jour : 17/09/2021 - 21:38 
 ### **⚠️Programme en cours de développement !⚠️** 
 ### Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme.
 
