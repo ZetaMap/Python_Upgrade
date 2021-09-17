@@ -2,8 +2,8 @@ from ion import keydown,KEY_LEFT,KEY_RIGHT,KEY_UP,KEY_DOWN,KEY_EXE,KEY_OK
 from time import sleep
 
 # screen resolution of Numworks
-LARGE_FONT = (27,11)
-SMALL_FONT = (40, 14)
+LARGE_FONT = (29,11)
+SMALL_FONT = (42, 14)
 ###############################
 
 def print_book(screen, text, wholeWords=True, onlyOnePage=None, printFooter=True):
@@ -36,16 +36,17 @@ def print_book(screen, text, wholeWords=True, onlyOnePage=None, printFooter=True
     if printFooter: print(mjust("[EXE]: exit ", " p.{}/{}".format(page+1,pages), letters))
 
   letters, lines, page = screen[0], screen[1]-1 if printFooter else screen[1], 0
-  if type(text) == str: text = words_wrap(text, letters, wholeWords).splitlines()
+  if type(text) == str: text = words_wrap(text, letters, wholeWords).split('\n')
   else:
     text = []
     for i in text:
-      temp = words_wrap(i, letters, wholeWords).splitlines()
+      temp = words_wrap(i, letters, wholeWords).split('\n')
       for ii in range(lines-len(temp)): temp += ['']
       text += temp
   textSize = len(text)
   pages = textSize//(lines+1)
   if textSize%(lines-1): pages+=1
+  elif pages == 0: pages = 1
   
   if onlyOnePage != None:
     if onlyOnePage >= 0: page = onlyOnePage
@@ -107,19 +108,19 @@ If 'wholeWords' = False, the function will just place a line break when 'width' 
   type_test(end, str)
 ### ^ Testing fonction ^ ###
 
-  output, wrapperSize, lines = "", len(wrapper), text.splitlines()
+  output, wrapperSize, lines = "", len(wrapper), text.split('\n')
   
   for i, line in enumerate(lines):
-    linesSize, line = len(lines), cut(line, width)
+    linesSize, line = len(lines), cut(line, width-8 if line.startswith('\t') else width)
     
     if wholeWords:
       t = not (line[0].endswith(wrapper) or line[1].startswith(wrapper))
       if wrapper in line[0].lstrip(wrapper) and t and line[1] != '':
-        line[0] = line[0].rstrip(wrapper)
+        line[0] = line[0].rstrip(wrapper+'\t')
         test = cut(line[0], line[0].rindex(wrapper))
         line[0], line[1] = test[0], test[1][0 if t else wrapperSize:]+line[1]
         
-    output += line[0].rstrip(wrapper)+'\n'
+    output += line[0].rstrip(wrapper+'\t')+'\n'
     if line[1] != '':
       if i < linesSize: lines.insert(i+1, line[1][wrapperSize if line[1].startswith(wrapper) else 0:])
       else: lines.append(line[1][wrapperSize if line[1].startswith(wrapper) else 0:])
@@ -167,18 +168,19 @@ def print_list(screen, text, wholeWords=True, onlyOneIndex=None, printScrollbar=
     print()
     if printScrollbar:
       for i in range(lines): 
-        try: print(_list[i].ljust(letters+1)+scrollbar[i])
-        except IndexError: print(''.ljust(letters+1)+scrollbar[i])    
+        try: print(mjust(_list[i], scrollbar[i], letters+1))
+        except IndexError: print(mjust('', scrollbar[i], letters+2))    
     else:
       for i in range(lines): 
         try: print(_list[i])
-        except IndexError: print()  
+        except IndexError: break
 
-  letters, lines, index = screen[0]-2 if printScrollbar else screen[0], screen[1], 0
-  if type(text) == str: text = words_wrap(text, letters, wholeWords).splitlines()
-  else: text = words_wrap('\n'.join(text), letters, wholeWords).splitlines()
+  letters, lines, index = screen[0]-1 if printScrollbar else screen[0], screen[1], 0
+  if type(text) == str: text = words_wrap(text, letters, wholeWords).split('\n')
+  else: text = words_wrap('\n'.join(text), letters, wholeWords).split('\n')
   textSize = len(text)
 
+  if textSize == 0: text = ['']
   if onlyOneIndex != None:
     if onlyOneIndex >= 0: index = onlyOneIndex
     else: index = textSize-onlyOneIndex
