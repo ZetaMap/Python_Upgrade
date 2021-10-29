@@ -6,7 +6,7 @@
 ### Ce programme contient des fonctions python plus avancés et peut-être utilisé comme un module python à importer dans votre programme.
 
 ### Installation
-Pour installer ce programme il vous suffira de taper ``pip install python_upgrade`` dans une console, et pour le mettre à jour, tapez ``pip install --upgrade python_upgrade``.
+Pour installer ce programme il vous suffira de taper ``pip install python_upgrade`` dans une console, et pour le mettre à jour, tapez ``pip install --upgrade python_upgrade``. <br>
 Une fois fait il vous suffit d'écrire ``import python_upgrade`` ou ``from python_upgrade import *``, dans votre programme, pour importer la librairie.
 
 ### Fonctions :
