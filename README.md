@@ -1,3 +1,4 @@
+![Download](https://shields.io/github/downloads/ZetaMap/Python_Upgrade/total)
 # Python_Upgrade (v10.3)
 
 ## Création : 21/01/2021 
